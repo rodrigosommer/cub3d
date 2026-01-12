@@ -1,0 +1,88 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   doors.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rsommer <rsommer@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/06 15:00:00 by rsommer           #+#    #+#             */
+/*   Updated: 2025/01/06 15:00:00 by rsommer          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static void	open_door(t_door *door)
+{
+	if (door->state == DOOR_CLOSED)
+	{
+		door->state = DOOR_OPENING;
+		door->animation_timer = 0.0;
+	}
+}
+
+static void	close_door(t_door *door)
+{
+	if (door->state == DOOR_OPEN)
+	{
+		door->state = DOOR_CLOSING;
+		door->animation_timer = 0.0;
+	}
+}
+
+static void	toggle_door_state(t_door *door)
+{
+	if (door->state == DOOR_CLOSED)
+		open_door(door);
+	else if (door->state == DOOR_OPEN)
+		close_door(door);
+	else if (door->state == DOOR_OPENING)
+	{
+		door->state = DOOR_CLOSING;
+		door->animation_timer = 0.0;
+		door->animation_progress = 1.0 - door->animation_progress;
+	}
+	else if (door->state == DOOR_CLOSING)
+	{
+		door->state = DOOR_OPENING;
+		door->animation_timer = 0.0;
+		door->animation_progress = 1.0 - door->animation_progress;
+	}
+}
+
+static t_door	*find_facing_door(t_game *game)
+{
+	double	ray_x;
+	double	ray_y;
+	int		map_x;
+	int		map_y;
+	t_door	*door;
+
+	ray_x = game->player.x + game->player.dir_x * 0.8;
+	ray_y = game->player.y + game->player.dir_y * 0.8;
+	map_x = (int)ray_x;
+	map_y = (int)ray_y;
+	if (map_x >= 0 && map_x < game->map_width
+		&& map_y >= 0 && map_y < game->map_height)
+	{
+		if (game->map[map_y][map_x] == 'D' || game->map[map_y][map_x] == 'O')
+		{
+			door = find_door(game, map_x, map_y);
+			if (door)
+				return (door);
+		}
+	}
+	return (NULL);
+}
+
+void	handle_door_interaction(t_game *game)
+{
+	t_door	*door;
+
+	door = find_facing_door(game);
+	if (door)
+	{
+		toggle_door_state(door);
+		return ;
+	}
+}
