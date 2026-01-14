@@ -20,7 +20,7 @@
 # include <fcntl.h>
 # include <string.h>
 # include <errno.h>
-# include "mlx.h"
+//# include "mlx.h"
 # include "libft.h"
 
 # define WIDTH 1024
@@ -69,12 +69,12 @@ typedef struct s_img
 {
 	void	*img;
 	char	*addr;
-	int	bits_per_pixel;
-	int	line_length;
-	int	endian;
-	int	width;
-	int	height;
-}t_img;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		width;
+	int		height;
+}	t_img;
 
 typedef struct s_player
 {
@@ -220,7 +220,7 @@ void	cleanup_map_on_error(char **temp_map, int y);
 void	set_north_direction(t_game *game);
 void	set_south_direction(t_game *game);
 int		handle_player_char(char c, int *player_found, char *player_dir,
-					t_game *game);
+			t_game *game);
 int		finalize_map(t_game *game, char **temp_map, int y);
 int		read_map_lines(int fd, t_game *game, char ***temp_map, int *capacity);
 int		process_map_line(char *line, t_game *game, int y);
@@ -231,13 +231,13 @@ int		parse_rgb_values(char *line, int *color);
 int		init_game(t_game *game);
 int		render_frame(t_game *game);
 void	raycasting(t_game *game);
-int	key_press(int keycode, t_game *game);
-int	close_window(t_game *game);
-int	on_key_press(int keycode, void *param);
-int	on_key_release(int keycode, void *param);
-int	on_close(void *param);
-int	on_mouse_move(int x, int y, void *param);
-int	on_loop(void *param);
+int		key_press(int keycode, t_game *game);
+int		close_window(t_game *game);
+int		on_key_press(int keycode, void *param);
+int		on_key_release(int keycode, void *param);
+int		on_close(void *param);
+int		on_mouse_move(int x, int y, void *param);
+int		on_loop(void *param);
 void	move_player(t_game *game, double move_x, double move_y);
 void	rotate_player(t_game *game, double angle);
 void	load_texture(t_game *game, int index, char *path);
@@ -250,9 +250,9 @@ void	error_exit(char *message);
 char	*get_next_line(int fd);
 void	calculate_texture(t_ray *ray, t_game *game);
 void	draw_wall_column(t_game *game, t_ray *ray, int x);
-int	process_wall_pixel(t_game *game, t_ray *ray, double *vars);
+int		process_wall_pixel(t_game *game, t_ray *ray, double *vars);
 int		get_safe_tex_y(double tex_pos, int tex_height);
-int	get_texture_y(double tex_pos, int height);
+int		get_texture_y(double tex_pos, int height);
 void	render_minimap(t_game *game);
 void	draw_minimap_pixel(t_game *game, int x, int y, int color);
 void	draw_minimap_border(t_game *game);
@@ -308,6 +308,6 @@ void	draw_blur_effect(t_game *game, t_katana_p *p, double anim_f);
 void	toggle_door(t_door *door);
 int		is_valid_char(char c);
 void	add_enemy_near_player(char **map, int height, int width);
-int	is_door_solid(t_game *game, int x, int y);
+int		is_door_solid(t_game *game, int x, int y);
 
 #endif
