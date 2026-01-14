@@ -39,8 +39,6 @@
 # define KEY_ESC 65307
 # define KEY_SPACE 32
 # define KEY_E 101
-# define KEY_R 114
-# define KEY_ENTER 65293
 
 # define NORTH 0
 # define SOUTH 1
@@ -59,16 +57,24 @@
 # define DOOR_OPEN 2
 # define DOOR_CLOSING 3
 
+typedef struct s_door_loop
+{
+	double	step;
+	double	tex_pos;
+	int		y;
+	int		end;
+}	t_door_loop;
+
 typedef struct s_img
 {
 	void	*img;
 	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int		width;
-	int		height;
-}	t_img;
+	int	bits_per_pixel;
+	int	line_length;
+	int	endian;
+	int	width;
+	int	height;
+}t_img;
 
 typedef struct s_player
 {
@@ -198,16 +204,6 @@ typedef struct s_game
 	double		zbuffer[WIDTH];
 	t_door		doors[50];
 	int			num_doors;
-	double		game_time;
-	int			rainbow_enabled;
-	double		rainbow_speed;
-	double		rainbow_intensity;
-	double		rainbow_position_factor;
-	double		tombstone_x;
-	double		tombstone_y;
-	int			has_tombstone;
-	int			level_completed;
-	int			victory_reason;
 }	t_game;
 
 void	init_sprite(t_game *game, int x, int y);
@@ -223,7 +219,8 @@ int		expand_map_capacity(char ***temp_map, int *capacity);
 void	cleanup_map_on_error(char **temp_map, int y);
 void	set_north_direction(t_game *game);
 void	set_south_direction(t_game *game);
-int		handle_player_char(char c, int *player_found, char *player_dir);
+int		handle_player_char(char c, int *player_found, char *player_dir,
+					t_game *game);
 int		finalize_map(t_game *game, char **temp_map, int y);
 int		read_map_lines(int fd, t_game *game, char ***temp_map, int *capacity);
 int		process_map_line(char *line, t_game *game, int y);
@@ -234,21 +231,28 @@ int		parse_rgb_values(char *line, int *color);
 int		init_game(t_game *game);
 int		render_frame(t_game *game);
 void	raycasting(t_game *game);
-int		key_press(int keycode, t_game *game);
-int		close_window(t_game *game);
+int	key_press(int keycode, t_game *game);
+int	close_window(t_game *game);
+int	on_key_press(int keycode, void *param);
+int	on_key_release(int keycode, void *param);
+int	on_close(void *param);
+int	on_mouse_move(int x, int y, void *param);
+int	on_loop(void *param);
 void	move_player(t_game *game, double move_x, double move_y);
 void	rotate_player(t_game *game, double angle);
 void	load_texture(t_game *game, int index, char *path);
 void	cleanup_game(t_game *game);
+void	free_map(char **map);
 void	put_pixel(t_img *img, int x, int y, int color);
 int		get_texture_pixel(t_img *texture, int x, int y);
+void	error_exit_with_cleanup(t_game *game, char *message);
 void	error_exit(char *message);
 char	*get_next_line(int fd);
 void	calculate_texture(t_ray *ray, t_game *game);
 void	draw_wall_column(t_game *game, t_ray *ray, int x);
-int		process_wall_pixel(t_game *game, t_ray *ray, double *vars,
-			int rainbow_color);
+int	process_wall_pixel(t_game *game, t_ray *ray, double *vars);
 int		get_safe_tex_y(double tex_pos, int tex_height);
+int	get_texture_y(double tex_pos, int height);
 void	render_minimap(t_game *game);
 void	draw_minimap_pixel(t_game *game, int x, int y, int color);
 void	draw_minimap_border(t_game *game);
@@ -304,16 +308,6 @@ void	draw_blur_effect(t_game *game, t_katana_p *p, double anim_f);
 void	toggle_door(t_door *door);
 int		is_valid_char(char c);
 void	add_enemy_near_player(char **map, int height, int width);
-int		is_door_solid(t_game *game, int x, int y);
-int		hsv_to_rgb(double h, double s, double v);
-int		get_rainbow_color(double time_factor, double position_factor);
-int		apply_rainbow_shift(int original_color, int rainbow_color,
-			double intensity);
-void	extract_rgb(int color, int *r, int *g, int *b);
-int		clamp_rgb(int value);
-void	hsv_segment_rgb(double h_prime, double c, double x, double *rgb_out);
-void	check_victory_conditions(t_game *game);
-void	render_victory_screen(t_game *game);
-void	init_tombstone_sprite(t_game *game);
+int	is_door_solid(t_game *game, int x, int y);
 
 #endif

@@ -92,7 +92,7 @@ int	parse_file(char *filename, t_game *game)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		error_exit("Cannot open file");
+		error_exit_with_cleanup(game, "Cannot open file");
 		return (0);
 	}
 	if (!parse_elements(fd, game) || !parse_map(fd, game))

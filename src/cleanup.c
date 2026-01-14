@@ -12,21 +12,6 @@
 
 #include "cub3d.h"
 
-static void	free_map(char **map)
-{
-	int	i;
-
-	if (!map)
-		return ;
-	i = 0;
-	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
-
 static void	free_texture_paths(char **paths)
 {
 	int	i;
@@ -43,32 +28,36 @@ static void	free_texture_paths(char **paths)
 	}
 }
 
+static void	destroy_single_texture(t_game *game, t_img *texture)
+{
+	if (!game->mlx || !texture->img)
+		return ;
+	mlx_destroy_image(game->mlx, texture->img);
+	texture->img = NULL;
+}
+
+static void	destroy_extra_textures(t_game *game)
+{
+	destroy_single_texture(game, &game->floor_texture);
+	destroy_single_texture(game, &game->ceiling_texture);
+	destroy_single_texture(game, &game->door_closed_texture);
+	destroy_single_texture(game, &game->door_open_texture);
+	destroy_single_texture(game, &game->katana_texture);
+}
+
 static void	destroy_textures(t_game *game)
 {
-	int	i;
+	int		i;
 
 	if (!game->mlx)
 		return ;
 	i = 0;
 	while (i < 4)
 	{
-		if (game->textures[i].img)
-		{
-			mlx_destroy_image(game->mlx, game->textures[i].img);
-			game->textures[i].img = NULL;
-		}
+		destroy_single_texture(game, &game->textures[i]);
 		i++;
 	}
-	if (game->floor_texture.img)
-	{
-		mlx_destroy_image(game->mlx, game->floor_texture.img);
-		game->floor_texture.img = NULL;
-	}
-	if (game->ceiling_texture.img)
-	{
-		mlx_destroy_image(game->mlx, game->ceiling_texture.img);
-		game->ceiling_texture.img = NULL;
-	}
+	destroy_extra_textures(game);
 }
 
 void	cleanup_game(t_game *game)

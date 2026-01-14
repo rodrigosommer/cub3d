@@ -49,10 +49,10 @@ static int	process_map_char(char *line, t_game *game, int *x, int y)
 
 	if (!is_valid_char(line[*x]))
 	{
-		error_exit("Invalid character in map");
+		error_exit_with_cleanup(game, "Invalid character in map");
 		return (0);
 	}
-	if (!handle_player_char(line[*x], &player_found, &player_dir))
+	if (!handle_player_char(line[*x], &player_found, &player_dir, game))
 		return (0);
 	if (line[*x] == 'N' || line[*x] == 'S' || line[*x] == 'E'
 		|| line[*x] == 'W')
@@ -95,6 +95,5 @@ int	parse_map(int fd, t_game *game)
 	y = read_map_lines(fd, game, &temp_map, &capacity);
 	if (y == -1)
 		return (0);
-	add_enemy_near_player(temp_map, y, game->map_width);
 	return (finalize_map(game, temp_map, y));
 }

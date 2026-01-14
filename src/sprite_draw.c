@@ -18,15 +18,19 @@ static void	init_sprite_draw(t_sprite_draw *sd, t_game *game, t_sprite *sp,
 	int		sprite_screen_x;
 	double	temp_size;
 	int		y_offset;
+	int		pitch_offset;
+	int		horizon;
 
 	calc_sprite_screen_pos(game, sp, &sprite_screen_x, &temp_size);
 	sd->dist = sqrt((sp->x - game->player.x) * (sp->x - game->player.x)
 			+ (sp->y - game->player.y) * (sp->y - game->player.y));
+	pitch_offset = (int)(game->player.pitch * 200);
+	horizon = HEIGHT / 2 + pitch_offset;
 	y_offset = 0;
 	if (sp->is_dead)
 		y_offset = sprite_size / 2;
-	sd->start_y = (HEIGHT - sprite_size) / 2 + y_offset;
-	sd->end_y = (HEIGHT + sprite_size) / 2 + y_offset;
+	sd->start_y = horizon - sprite_size + y_offset;
+	sd->end_y = horizon + y_offset;
 	if (sd->start_y < 0)
 		sd->start_y = 0;
 	if (sd->end_y >= HEIGHT)
@@ -68,8 +72,6 @@ static void	draw_sprite_pixels(t_game *game, t_sprite_draw *sd, int x,
 	int	y;
 	int	tex_y;
 	int	color;
-	int	pitch_offset;
-	int	final_y;
 
 	y = sd->start_y;
 	while (y <= sd->end_y)
@@ -82,10 +84,8 @@ static void	draw_sprite_pixels(t_game *game, t_sprite_draw *sd, int x,
 					sd->tex_x, tex_y);
 			if (!is_transparent_pixel(color, sd->tex_id))
 			{
-				pitch_offset = (int)(game->player.pitch * 100);
-				final_y = y + pitch_offset;
-				if (final_y >= 0 && final_y < HEIGHT)
-					put_pixel(&game->img, x, final_y, color);
+				if (y >= 0 && y < HEIGHT)
+					put_pixel(&game->img, x, y, color);
 			}
 		}
 		y++;

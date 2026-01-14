@@ -19,7 +19,7 @@ int	finalize_map(t_game *game, char **temp_map, int y)
 	game->map = temp_map;
 	if (y == 0)
 	{
-		error_exit("Empty map");
+		error_exit_with_cleanup(game, "Empty map");
 		return (0);
 	}
 	return (1);
@@ -27,18 +27,10 @@ int	finalize_map(t_game *game, char **temp_map, int y)
 
 void	process_special_char(char *line, t_game *game, int *x, int y)
 {
-	if (line[*x] == '2')
-	{
-		init_sprite(game, *x, y);
+	(void)game;
+	(void)y;
+	if (line[*x] == 'T')
 		line[*x] = '0';
-	}
-	else if (line[*x] == 'T')
-	{
-		game->tombstone_x = *x + 0.5;
-		game->tombstone_y = y + 0.5;
-		game->has_tombstone = 1;
-		line[*x] = '0';
-	}
 }
 
 int	read_map_lines(int fd, t_game *game, char ***temp_map, int *capacity)

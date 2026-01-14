@@ -16,12 +16,12 @@ static int	handle_floor_color(char *line, t_game *game)
 {
 	if (game->floor_color != -1)
 	{
-		error_exit("Duplicate floor color definition");
+		error_exit_with_cleanup(game, "Duplicate floor color definition");
 		return (0);
 	}
 	if (!parse_rgb_values(line, &game->floor_color))
 	{
-		error_exit("Invalid floor color format");
+		error_exit_with_cleanup(game, "Invalid floor color format");
 		return (0);
 	}
 	return (1);
@@ -31,12 +31,12 @@ static int	handle_ceiling_color(char *line, t_game *game)
 {
 	if (game->ceiling_color != -1)
 	{
-		error_exit("Duplicate ceiling color definition");
+		error_exit_with_cleanup(game, "Duplicate ceiling color definition");
 		return (0);
 	}
 	if (!parse_rgb_values(line, &game->ceiling_color))
 	{
-		error_exit("Invalid ceiling color format");
+		error_exit_with_cleanup(game, "Invalid ceiling color format");
 		return (0);
 	}
 	return (1);

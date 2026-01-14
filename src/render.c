@@ -21,6 +21,10 @@ static void	draw_ceiling_floor(t_game *game)
 
 	pitch_offset = (int)(game->player.pitch * 200);
 	horizon = HEIGHT / 2 + pitch_offset;
+	if (horizon < 0)
+		horizon = 0;
+	if (horizon >= HEIGHT)
+		horizon = HEIGHT - 1;
 	y = 0;
 	while (y < HEIGHT)
 	{
@@ -45,7 +49,5 @@ int	render_frame(t_game *game)
 	render_katana_hands(game);
 	render_minimap(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
-	if (game->level_completed)
-		render_victory_screen(game);
 	return (0);
 }

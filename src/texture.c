@@ -26,13 +26,13 @@ void	load_texture(t_game *game, int index, char *path)
 
 int	get_texture_pixel(t_img *texture, int x, int y)
 {
-	char	*dst;
+	unsigned char	*dst;
 
 	if (x < 0 || y < 0 || x >= texture->width || y >= texture->height)
 		return (0);
-	dst = texture->addr + (y * texture->line_length
-			+ x * (texture->bits_per_pixel / 8));
-	return (*(unsigned int *)dst);
+	dst = (unsigned char *)(texture->addr + (y * texture->line_length
+				+ x * (texture->bits_per_pixel / 8)));
+	return ((dst[2] << 16) | (dst[1] << 8) | dst[0]);
 }
 
 void	put_pixel(t_img *img, int x, int y, int color)

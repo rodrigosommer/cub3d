@@ -12,17 +12,13 @@
 
 #include "cub3d.h"
 
-int	process_wall_pixel(t_game *game, t_ray *ray, double *vars,
-	int rainbow_color)
+int	process_wall_pixel(t_game *game, t_ray *ray, double *vars)
 {
 	int	color;
 
 	color = get_texture_pixel(&game->textures[ray->tex_num], ray->tex_x,
 			get_safe_tex_y(vars[1], game->textures[ray->tex_num].height));
 	vars[1] += vars[0];
-	if (game->rainbow_enabled)
-		color = apply_rainbow_shift(color, rainbow_color,
-				game->rainbow_intensity);
 	if (ray->side == 1)
 		color = (color >> 1) & 8355711;
 	return (color);

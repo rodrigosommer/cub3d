@@ -14,23 +14,9 @@
 
 static void	init_game_struct(t_game *game)
 {
-	int	i;
-
-	game->mlx = NULL;
-	game->win = NULL;
-	game->img.img = NULL;
-	game->map = NULL;
-	game->map_width = 0;
-	game->map_height = 0;
+	ft_bzero(game, sizeof(*game));
 	game->floor_color = -1;
 	game->ceiling_color = -1;
-	i = 0;
-	while (i < 4)
-	{
-		game->textures[i].img = NULL;
-		game->texture_paths[i] = NULL;
-		i++;
-	}
 }
 
 static int	validate_args(int argc, char **argv)

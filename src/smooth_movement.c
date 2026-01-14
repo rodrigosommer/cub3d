@@ -18,19 +18,10 @@ int	key_press_smooth(int keycode, t_game *game)
 		game->keys[keycode] = 1;
 	if (keycode == KEY_ESC)
 		close_window(game);
-	if (game->level_completed && keycode == KEY_ENTER)
-	{
-		close_window(game);
-		return (0);
-	}
-	if (game->level_completed)
-		return (0);
 	if (keycode == KEY_SPACE)
 		handle_katana_slash(game);
 	else if (keycode == KEY_E)
 		handle_door_interaction(game);
-	else if (keycode == KEY_R)
-		game->rainbow_enabled = !game->rainbow_enabled;
 	return (0);
 }
 

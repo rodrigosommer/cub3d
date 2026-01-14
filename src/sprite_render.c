@@ -30,7 +30,7 @@ void	calc_sprite_screen_pos(t_game *game, t_sprite *sprite,
 	transform_y = inv_det * (-game->player.plane_y * sprite_x
 			+ game->player.plane_x * sprite_y);
 	*sprite_screen_x = (int)((WIDTH / 2) * (1 + transform_x / transform_y));
-	*sprite_size = ft_abs((int)(HEIGHT / transform_y));
+	*sprite_size = ft_abs((int)(HEIGHT / transform_y)) * 0.5;
 }
 
 void	calc_sprite_bounds(int *start_x, int *end_x,

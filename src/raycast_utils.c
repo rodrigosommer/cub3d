@@ -46,17 +46,26 @@ static void	init_wall_render(t_game *game, t_ray *ray, int *bounds,
 	double *vars)
 {
 	int	pitch_offset;
+	int	start_offset;
 
 	pitch_offset = (int)(game->player.pitch * 200);
 	bounds[0] = ray->draw_start + pitch_offset;
 	bounds[1] = ray->draw_end + pitch_offset;
+	vars[0] = 1.0 * game->textures[ray->tex_num].height / ray->line_height;
+	vars[1] = (ray->draw_start - HEIGHT / 2 + ray->line_height / 2) * vars[0];
+	start_offset = 0;
 	if (bounds[0] < 0)
+	{
+		start_offset = -bounds[0];
+		vars[1] += start_offset * vars[0];
 		bounds[0] = 0;
+	}
 	if (bounds[1] >= HEIGHT)
 		bounds[1] = HEIGHT - 1;
-	vars[0] = 1.0 * game->textures[ray->tex_num].height / ray->line_height;
-	vars[1] = (bounds[0] - pitch_offset - HEIGHT / 2
-			+ ray->line_height / 2) * vars[0];
+	if (bounds[0] >= HEIGHT)
+		bounds[0] = HEIGHT - 1;
+	if (bounds[1] < 0)
+		bounds[1] = 0;
 }
 
 void	draw_wall_column(t_game *game, t_ray *ray, int x)
@@ -64,20 +73,16 @@ void	draw_wall_column(t_game *game, t_ray *ray, int x)
 	int		bounds[2];
 	double	vars[2];
 	int		y;
-	int		rainbow_color;
 
 	if (!game->textures[ray->tex_num].img
 		|| !game->textures[ray->tex_num].addr)
 		return ;
 	init_wall_render(game, ray, bounds, vars);
-	if (game->rainbow_enabled)
-		rainbow_color = get_rainbow_color(game->game_time * game->rainbow_speed,
-				(ray->map_x + ray->map_y) * game->rainbow_position_factor);
 	y = bounds[0];
-	while (y <= bounds[1] && y >= 0 && y < HEIGHT)
+	while (y <= bounds[1])
 	{
 		put_pixel(&game->img, x, y,
-			process_wall_pixel(game, ray, vars, rainbow_color));
+			process_wall_pixel(game, ray, vars));
 		y++;
 	}
 }

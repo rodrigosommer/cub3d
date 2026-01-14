@@ -16,7 +16,7 @@ static int	validate_empty_space(int x, int y, t_game *game)
 {
 	if (is_border_position(x, y, game))
 	{
-		error_exit("Map not surrounded by walls");
+		error_exit_with_cleanup(game, "Map not surrounded by walls");
 		return (0);
 	}
 	if (!check_position(x - 1, y, game)
@@ -24,7 +24,7 @@ static int	validate_empty_space(int x, int y, t_game *game)
 		|| !check_position(x, y - 1, game)
 		|| !check_position(x, y + 1, game))
 	{
-		error_exit("Map not properly enclosed");
+		error_exit_with_cleanup(game, "Map not properly enclosed");
 		return (0);
 	}
 	return (1);

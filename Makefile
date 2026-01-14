@@ -17,9 +17,11 @@ SRCS		= $(SRCDIR)/main.c \
 			  $(SRCDIR)/raycast_utils.c \
 			  $(SRCDIR)/raycast_utils2.c \
 			  $(SRCDIR)/events.c \
+			  $(SRCDIR)/key_pres.c \
 			  $(SRCDIR)/movement.c \
 			  $(SRCDIR)/texture.c \
 			  $(SRCDIR)/cleanup.c \
+			  $(SRCDIR)/free_get_texture.c \
 			  $(SRCDIR)/parse_map_utils.c \
 			  $(SRCDIR)/parse_map_utils2.c \
 			  $(SRCDIR)/parse_map_validation.c \
@@ -52,10 +54,7 @@ SRCS		= $(SRCDIR)/main.c \
 			  $(SRCDIR)/katana_animation.c \
 			  $(SRCDIR)/katana_swing.c \
 			  $(SRCDIR)/katana_slash.c \
-			  $(SRCDIR)/katana_door.c \
-			  $(SRCDIR)/color_effects.c \
-			  $(SRCDIR)/color_effects_utils.c \
-			  $(SRCDIR)/victory_screen.c
+			  $(SRCDIR)/katana_door.c
 
 OBJS		= $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 

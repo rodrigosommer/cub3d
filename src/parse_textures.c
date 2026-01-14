@@ -59,18 +59,18 @@ int	parse_textures(char *line, t_game *game)
 	index = get_texture_index(line);
 	if (index == -1)
 	{
-		error_exit("Invalid texture identifier");
+		error_exit_with_cleanup(game, "Invalid texture identifier");
 		return (0);
 	}
 	if (game->texture_paths[index])
 	{
-		error_exit("Duplicate texture definition");
+		error_exit_with_cleanup(game, "Duplicate texture definition");
 		return (0);
 	}
 	path = extract_path(line);
 	if (!path)
 	{
-		error_exit("Invalid texture path");
+		error_exit_with_cleanup(game, "Invalid texture path");
 		return (0);
 	}
 	game->texture_paths[index] = path;

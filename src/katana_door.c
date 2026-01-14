@@ -39,7 +39,6 @@ t_door	*find_facing_door_katana(t_game *game)
 
 void	toggle_door(t_door *door)
 {
-	printf("Door found! Current state: %d\n", door->state);
 	if (door->state == DOOR_CLOSED)
 	{
 		door->state = DOOR_OPENING;

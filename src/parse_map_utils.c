@@ -49,13 +49,14 @@ void	set_south_direction(t_game *game)
 	game->player.plane_y = 0;
 }
 
-int	handle_player_char(char c, int *player_found, char *player_dir)
+int	handle_player_char(char c, int *player_found, char *player_dir,
+					t_game *game)
 {
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
 		if (*player_found)
 		{
-			error_exit("Multiple player positions found");
+			error_exit_with_cleanup(game, "Multiple player positions found");
 			return (0);
 		}
 		*player_dir = c;

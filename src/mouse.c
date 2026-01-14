@@ -17,26 +17,18 @@ int	mouse_move(int x, int y, t_game *game)
 	int		center_x;
 	int		center_y;
 	int		delta_x;
-	int		delta_y;
 	double	rotation;
 
 	center_x = WIDTH / 2;
 	center_y = HEIGHT / 2;
 	delta_x = x - center_x;
-	delta_y = y - center_y;
+	(void)y;
 	if (delta_x != 0)
 	{
 		rotation = delta_x * 0.003;
 		rotate_player(game, rotation);
 	}
-	if (delta_y != 0)
-	{
-		game->player.pitch -= delta_y * 0.002;
-		if (game->player.pitch > 0.8)
-			game->player.pitch = 0.8;
-		if (game->player.pitch < -0.8)
-			game->player.pitch = -0.8;
-	}
+	game->player.pitch = 0.0;
 	mlx_mouse_move(game->mlx, game->win, center_x, center_y);
 	return (0);
 }

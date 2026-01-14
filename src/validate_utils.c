@@ -34,7 +34,7 @@ int	player_exists(t_game *game)
 {
 	if (game->player.x == 0 && game->player.y == 0)
 	{
-		error_exit("No player position found");
+		error_exit_with_cleanup(game, "No player position found");
 		return (0);
 	}
 	return (1);
